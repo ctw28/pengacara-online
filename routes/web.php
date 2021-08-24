@@ -16,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/dashboard', 'App\Http\Controllers\DashboardController@index')->name('dashboard');
+Route::get('/kwitansi', 'App\Http\Controllers\CetakController@index')->name('kwitansi');
