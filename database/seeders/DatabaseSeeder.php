@@ -19,8 +19,10 @@ class DatabaseSeeder extends Seeder
             ['nama_role' => 'administrator', "keterangan_role"=>"admin utama"],
             ['nama_role' => 'admin_fakultas', "keterangan_role"=>"admin untuk mengelola anggaran fakultas"]
         ]);
-        DB::table('master_tahun_anggarans')->insert([
-            ['tahun_anggaran' => 2021, "tahun_anggaran_sebutan"=>"Tahun Anggaran 2021"]
+
+        DB::table('master_jabatans')->insert([
+            ['nama_jabatan' => "Bendahara Pengeluaran", "alias"=>"bp","keterangan"=>"keterangan pejabat"],
+            ['nama_jabatan' => "PPK", "alias"=>"ppk","keterangan"=>"pejabat......."],
         ]);
         DB::table('master_fakultas')->insert([
             ['fakultas_nama' => "Tarbiyah dan Ilmu Keguruan", "singkatan"=>"FATIK"],
@@ -31,20 +33,20 @@ class DatabaseSeeder extends Seeder
         $user = [
             [
                 'user_role_id' => 1,
-                'name' => 'Admin',
+                'name' => 'Administrator',
                 'email' => 'admin@mail.com',
                 'password' => bcrypt('1234qwer'),
             ],
             [
                 'user_role_id' => 2,
-                'name' => 'febi',
-                'email' => 'admin2@mail.com',
+                'name' => 'Admin Febi',
+                'email' => 'febi@mail.com',
                 'password' => bcrypt('1234qwer'),
             ],
         ];
         DB::table('users')->insert($user);
         DB::table('user_fakultas')->insert([
-            ['user_id' => 2,'idpeg' => 97, "master_fakultas_id"=>4]
+            ['user_id' => 2,'idpeg' => 97, "master_fakultas_id"=>4, "is_aktif"=>1]
         ]);
     }
 }

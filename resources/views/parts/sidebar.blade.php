@@ -6,10 +6,10 @@
         <ul class="metismenu" id="menu">
             <li class="dropdown header-profile">
                 <a class="nav-link" href="javascript:void(0);" role="button" data-bs-toggle="dropdown">
-                    <img src="images/profile/pic1.jpg" width="20" alt="" />
+                    <img src="{{asset('/')}}images/profile/pic1.jpg" width="20" alt="" />
                     <div class="header-info ms-3">
-                        <span class="font-w600 ">Hi,<b>Admin</b></span>
-                        <small class="text-end font-w400">admin@iainkendari.ac.id</small>
+                        <span class="font-w600 "><b>{{auth()->user()->name}}</b></span>
+                        <small class="text-end font-w400">{{auth()->user()->email}}</small>
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
@@ -22,17 +22,8 @@
                         </svg>
                         <span class="ms-2">Profile </span>
                     </a>
-                    <a href="./email-inbox.html" class="dropdown-item ai-icon">
-                        <svg id="icon-inbox" xmlns="http://www.w3.org/2000/svg" class="text-success" width="18"
-                            height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
-                            </path>
-                            <polyline points="22,6 12,13 2,6"></polyline>
-                        </svg>
-                        <span class="ms-2">Inbox </span>
-                    </a>
-                    <a href="./login.html" class="dropdown-item ai-icon">
+                    <a href="{{ route('logout') }}" class="dropdown-item ai-icon"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <svg id="icon-logout" xmlns="http://www.w3.org/2000/svg" class="text-danger" width="18"
                             height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -41,29 +32,18 @@
                             <line x1="21" y1="12" x2="9" y2="12"></line>
                         </svg>
                         <span class="ms-2">Logout </span>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
                     </a>
                 </div>
             </li>
-            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="flaticon-025-dashboard"></i>
-                    <span class="nav-text">Dashboard</span>
-                </a>
-            </li>
-            <li><a class="has-arrow ai-icon" href="#" aria-expanded="false">
-                    <i class="flaticon-050-info"></i>
-                    <span class="nav-text">Ampra</span>
-                </a>
-            </li>
-            <li><a class="has-arrow ai-icon" href="{{route('kwitansi')}}" aria-expanded="false">
-                    <i class="flaticon-041-graph"></i>
-                    <span class="nav-text">Kwitansi</span>
-                </a>
-            </li>
-            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="flaticon-086-star"></i>
-                    <span class="nav-text">Rekap</span>
-                </a>
-            </li>
+
+            @if(auth()->user()->user_role_id==1)
+            @include('parts.menu-admin')
+            @elseif(auth()->user()->user_role_id==2)
+            @include('parts.menu-user')
+            @endif
         </ul>
 
     </div>

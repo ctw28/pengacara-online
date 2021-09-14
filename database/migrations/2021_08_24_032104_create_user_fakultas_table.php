@@ -16,9 +16,10 @@ class CreateUserFakultasTable extends Migration
         Schema::create('user_fakultas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->integer('idpeg'); //ini dari simpeg
+            $table->string('idpeg'); //ini dari simpeg
             $table->unsignedBigInteger('master_fakultas_id');
-
+            $table->enum('is_aktif',[0,1]);
+            
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

@@ -15,7 +15,7 @@ class CreateMasterTahunAnggaransTable extends Migration
     {
         Schema::create('master_tahun_anggarans', function (Blueprint $table) {
             $table->id();
-            $table->year('tahun_anggaran');
+            $table->string('tahun_anggaran');
             $table->string('tahun_anggaran_sebutan');
             $table->timestamps();
         });

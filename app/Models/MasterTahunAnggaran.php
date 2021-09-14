@@ -10,8 +10,13 @@ class MasterTahunAnggaran extends Model
     use HasFactory;
 
     protected $fillable = [
-        'tahun',
-        'tahun_anggaran_nama'
+        'tahun_anggaran',
+        'tahun_anggaran_sebutan'
     ];
+
+    public function tahunAnggaranDipa()
+    {
+        return $this->hasOne('App\Models\TahunAnggaranDipa','tahun_anggaran_id');
+    }
 
 }
