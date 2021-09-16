@@ -10,6 +10,10 @@
                     <div><strong>{{$data['kegiatan']->kegiatan_nama}}</strong> </div>
                     <div class="mt-1"> Tanggal Kegiatan :
                         {{\Carbon\Carbon::parse($data['kegiatan']->kegiatan_tanggal)->format('d M Y')}}</div>
+                    <br>
+                    <a href="{{route('user.kegiatan.index')}}" class="btn btn-warning btn-xs"><i
+                            class="fa fa-arrow-left"></i> Kembali</a>
+
                 </div>
             </div>
         </div>
@@ -93,7 +97,9 @@
                                         </svg>
                                     </button>
                                     <div class="dropdown-menu" style="margin: 0px;">
-                                        <a class="dropdown-item" href="#"><i
+                                        <a class="dropdown-item"
+                                            href="{{route('user.kegiatan.jabatan.destroy',$item->id)}}"
+                                            onclick="return confirm('Yakin Hapus? ini akan menghapus semua data terkait data yang dihapus')"><i
                                                 class="las la-times-circle text-danger scale5 me-3"></i>Delete</a>
                                     </div>
                                 </div>

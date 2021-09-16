@@ -19,7 +19,7 @@ class CreateKegiatanBayarJabatansTable extends Migration
             $table->unsignedBigInteger('m_bayar_kategori_id');
             
             $table->timestamps();
-            $table->foreign('kegiatan_jabatan_id')->references('id')->on('kegiatan_jabatans');        
+            $table->foreign('kegiatan_jabatan_id')->references('id')->on('kegiatan_jabatans')->onDelete('cascade');        
             $table->foreign('m_bayar_kategori_id')->references('id')->on('m_bayar_kategoris');        
         });
     }

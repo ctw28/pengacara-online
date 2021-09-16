@@ -35,6 +35,39 @@ class KegiatanController extends Controller
             "data"=>$data,
         ]);
     }
+    public function edit($kegiatanId){
+        $data['title'] = "Edit Kegiatan";
+        $data['kegiatan'] = Kegiatan::find($kegiatanId);
+        return view('user.kegiatan-edit',[
+            "data"=>$data,
+        ]);
+    }
+    public function update(Request $request, $kegiatanId){
+        try {
+            //code...
+            $data = [
+                'kegiatan_nama'=>$request->kegiatan_nama,
+                'kegiatan_tanggal'=>$request->kegiatan_tanggal,
+                'kegiatan_sub_kegiatan'=>$request->kegiatan_sub_kegiatan,
+                'kegiatan_akun'=>$request->kegiatan_akun,
+                'kegiatan_nomor_bukti'=>$request->kegiatan_nomor_bukti,
+                'kegiatan_sk'=>$request->kegiatan_sk,
+                'kegiatan_sk_tanggal'=>$request->kegiatan_sk_tanggal,
+            ];
+            // return $data;
+            $kegiatan = Kegiatan::find($kegiatanId);
+            $kegiatan->update($data);
+            return redirect()->route('user.kegiatan.index');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function delete($kegiatanId){
+        $find = Kegiatan::find($kegiatanId);
+        $find->delete();
+        return redirect()->back(); 
+    }
 
     public function store(Request $request){
         $request->pengaturan_fakultas_id = session('sesi')['pengaturan_fakultas_id'];
@@ -44,7 +77,7 @@ class KegiatanController extends Controller
             'kegiatan_tanggal'=>$request->kegiatan_tanggal,
             'kegiatan_sub_kegiatan'=>$request->kegiatan_sub_kegiatan,
             'kegiatan_akun'=>$request->kegiatan_akun,
-            'kegiatan_no_bukti'=>$request->kegiatan_no_bukti,
+            'kegiatan_nomor_bukti'=>$request->kegiatan_no_bukti,
             'kegiatan_sk'=>$request->kegiatan_sk,
             'kegiatan_sk_tanggal'=>$request->kegiatan_sk_tanggal,
         ];
@@ -58,6 +91,12 @@ class KegiatanController extends Controller
             'm_kegiatan_jabatan_id'=>$request->m_kegiatan_jabatan_id,
         ];
         $kegiatan = KegiatanJabatan::create($data);
+        return redirect()->back();
+    }
+
+    public function destroyJabatan($id){
+        $data = KegiatanJabatan::find($id);
+        $data->delete();
         return redirect()->back();
     }
 
@@ -125,6 +164,7 @@ class KegiatanController extends Controller
         $data['kegiatan']           = Kegiatan::find($id);
         $data['kegiatanJabatan']    = KegiatanJabatan::with(['mKegiatanJabatan'])->find($kegiatanJabatanId);
         $data['dataPeserta']        = KegiatanPeserta::where('kegiatan_jabatan_id',$kegiatanJabatanId)->get();
+        // return $data;
         return view('user.kegiatan-jabatan-peserta-tambah',[
             "data"=>$data,
         ]);     
@@ -248,6 +288,17 @@ class KegiatanController extends Controller
             // return array("status"=>false);
         }
     }
+    public function destroyBayarKegiatan($id){
+        try {
+            $find = KegiatanPembayaran::find($id);
+            $find->delete();
+            return redirect()->back(); 
+            //code...
+        } catch (\Throwable $th) {
+            throw $th;
+            // return array("status"=>false);
+        }
+    }
     
     
     public function indexAmpra($kegiatanId, $pembayaranId){
@@ -290,27 +341,51 @@ class KegiatanController extends Controller
             // return
         }
     }
-    public function storeAmpra(Request $request){
-        $data = $request->data;
-        foreach($data as $key => $row){
-            $newHonor = preg_replace('/[^0-9]/', '', $row['honor']);
-            $data[$key]['honor'] = $newHonor;
+    
+    public function destroyAmpra($id){
+        try {
+            $find = KegiatanPembayaranSesi::find($id);
+            $find->delete();
+            return redirect()->back(); 
+        } catch (\Throwable $th) {
+            throw $th;
+            // return
         }
-        // return $data;
-        $save = KegiatanPesertaBayar::insert($data);
-        return redirect()->back();
+    }
+
+    public function storeAmpra(Request $request){
+        try {
+        $check = KegiatanPesertaBayar::where('kegiatan_pembayaran_sesi_id',$request->kegiatan_pembayaran_sesi_id)->get();
+        if(count($check)>0){
+            $check->each(function ($data) {
+                $data->delete();
+            });
+        }
+        // return $check;
+        $data = json_decode($request->data);
+        $dataInsert = [];
+        foreach($data as $key => $row){
+            $dataInsert[$key]['kegiatan_pembayaran_sesi_id'] = $request->kegiatan_pembayaran_sesi_id;
+            $dataInsert[$key]['kegiatan_peserta_id'] = $row->kegiatan_peserta_id;
+            $dataInsert[$key]['honor'] = $row->honor;
+            $dataInsert[$key]['master_satuan_id'] = $row->master_satuan_id;
+            $dataInsert[$key]['jumlah'] = $row->jumlah;
+            $dataInsert[$key]['pajak'] = $row->pajak;
+        }
+        // return $dataInsert;
+        $save = KegiatanPesertaBayar::insert($dataInsert);
+        return array("status"=>true);
+        } catch (\Throwable $th) {
+            throw $th;
+            // return
+        }
+        // return redirect()->back();
     }
     public function setAmpra($kegiatanId, $pembayaranId, $pembayaranSesiId){
         $data['title']      = "Pembayaran Ampra";
         $data['kegiatan']   = Kegiatan::find($kegiatanId);
         $data['pembayaran'] = KegiatanPembayaran::find($pembayaranId);
-        $peserta = KegiatanPeserta::whereHas('kegiatanJabatan', function($kegiatanJabatan) use ($pembayaranSesiId){
-            $kegiatanJabatan->wherehas('kegiatanBayarJabatan',function($kegiatanBayarJabatan) use ($pembayaranSesiId){
-                $kegiatanBayarJabatan->wherehas('kegiatanPembayaranSesi', function($kegiatanPembayaranSesi) use ($pembayaranSesiId){
-                    $kegiatanPembayaranSesi->where('id',$pembayaranSesiId);
-                });
-            });
-        })->get();
+        
         $honor = KegiatanBayarJabatanAtur::whereHas('kegiatanBayarJabatan', function ($kegiatanBayarJabatan) use ($pembayaranSesiId){
             $kegiatanBayarJabatan->whereHas('kegiatanPembayaranSesi', function ($kegiatanPembayaranSesi) use ($pembayaranSesiId){
                 $kegiatanPembayaranSesi->where('id',$pembayaranSesiId);
@@ -321,25 +396,84 @@ class KegiatanController extends Controller
             }]);
         },'masterSatuan'])->get();
         // return $peserta;
-        if($honor[0]->kegiatanBayarJabatan->mBayarKategori->is_pajak==1){
+        
+        $check = KegiatanPesertaBayar::where('kegiatan_pembayaran_sesi_id',$pembayaranSesiId)->count();
+        if($check>0){
+            $peserta = KegiatanPesertaBayar::with(['kegiatanPeserta','kegiatanPembayaranSesi'=>function($kegiatanPembayaranSesi){
+                $kegiatanPembayaranSesi->with(['kegiatanBayarJabatan'=> function($kegiatanBayarJabatan){
+                    $kegiatanBayarJabatan->with(['kegiatanJabatan'=>function($kegiatanJabatan){
+                        $kegiatanJabatan->with('mKegiatanJabatan');
+                    }]);
+                }]);
+            }])->where('kegiatan_pembayaran_sesi_id',$pembayaranSesiId)->get();
+            if($honor[0]->kegiatanBayarJabatan->mBayarKategori->is_pajak==1){
             $data['pajak']=true;
             $peserta->map(function($data) use ($honor){
-                $data->total = $honor[0]->honor * $honor[0]->jumlah;
-                $data->pajak_potong = ($data->pajak/100 * $honor[0]->honor * $honor[0]->jumlah);
+                $data->id = $data->kegiatan_peserta_id;
+                $data->nama = $data->kegiatanPeserta->nama;
+                $data->golongan = $data->kegiatanPeserta->golongan;
+                $data->honor = $data->honor;
+                $data->jumlah = $data->jumlah;
+                $data->jabatan = $data->kegiatanPembayaranSesi->kegiatanBayarJabatan->kegiatanJabatan->mKegiatanJabatan->kegiatan_jabatan_nama;
+                $data->total = $data->honor * $data->jumlah;
+                $data->pajak = $data->kegiatanPeserta->pajak;
+                $data->pajak_potong = ($data->pajak/100 * $data->honor * $data->jumlah);
                 $data->terima = $data->total- $data->pajak_potong ;
             });
         }
         else{
             $data['pajak']=false;
             $peserta->map(function($data) use ($honor){
-                $data->total = $honor[0]->honor * $honor[0]->jumlah;
+                                $data->id = $data->kegiatan_peserta_id;
+
+                $data->nama = $data->kegiatanPeserta->nama;
+                $data->golongan = $data->kegiatanPeserta->golongan;
+                $data->honor = $data->honor;
+                $data->pajak = $data->kegiatanPeserta->pajak;
+                $data->jumlah = $data->jumlah;
+                $data->jabatan = $data->kegiatanPembayaranSesi->kegiatanBayarJabatan->kegiatanJabatan->mKegiatanJabatan->kegiatan_jabatan_nama;
+                $data->total = $data->honor * $data->jumlah;
                 $data->pajak_potong = 0;
                 $data->terima = $data->total;
             });
         }
+        }
+        else{
+            $peserta = KegiatanPeserta::whereHas('kegiatanJabatan', function($kegiatanJabatan) use ($pembayaranSesiId){
+                $kegiatanJabatan->wherehas('kegiatanBayarJabatan',function($kegiatanBayarJabatan) use ($pembayaranSesiId){
+                    $kegiatanBayarJabatan->wherehas('kegiatanPembayaranSesi', function($kegiatanPembayaranSesi) use ($pembayaranSesiId){
+                        $kegiatanPembayaranSesi->where('id',$pembayaranSesiId);
+                    });
+                });
+            })->get();
+            if($honor[0]->kegiatanBayarJabatan->mBayarKategori->is_pajak==1){
+                $data['pajak']=true;
+                $peserta->map(function($data) use ($honor){
+                    $data->honor = $honor[0]->honor;
+                    $data->jumlah = $honor[0]->jumlah;
+                    $data->jabatan = $data->kegiatanJabatan->mKegiatanJabatan->kegiatan_jabatan_nama;
+                    $data->total = $honor[0]->honor * $honor[0]->jumlah;
+                    $data->pajak_potong = ($data->pajak/100 * $honor[0]->honor * $honor[0]->jumlah);
+                    $data->terima = $data->total- $data->pajak_potong ;
+                });
+            }
+            else{
+                $data['pajak']=false;
+                $peserta->map(function($data) use ($honor){
+                    $data->honor = $honor[0]->honor;
+                    $data->jumlah = $honor[0]->jumlah;
+                    $data->jabatan = $data->kegiatanJabatan->mKegiatanJabatan->kegiatan_jabatan_nama;
+                    $data->total = $honor[0]->honor * $honor[0]->jumlah;
+                    $data->pajak_potong = 0;
+                    $data->terima = $data->total;
+                });
+            }
+
+        }
         $total = $peserta->reduce(function($tot, $item){
             return $tot + $item->terima;
         },0);
+        
         $data['total'] = $total;
         $data['pembayaranJenis'] = $honor[0];
         $data['peserta'] = $peserta;

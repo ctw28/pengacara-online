@@ -12,7 +12,7 @@ class DashboardController extends Controller
     //
     public function choose(){
         if(session('sesi')!=null)
-            return redirect()->route('user.dashboard');
+            return redirect()->route('user.kegiatan.index');
         $tahunAnggaran = MasterTahunAnggaran::all();
         return view('user.pilih-tahun-anggaran',[
             'tahunAnggaran' => $tahunAnggaran
@@ -38,11 +38,12 @@ class DashboardController extends Controller
         $request->session()->put('sesi', $sessionTahunAnggaran);
         // return $sessionTahunAnggaran;
         // return $tahunAnggaran;
-        return redirect()->route('user.dashboard');
+        return redirect()->route('user.kegiatan.index');
     }
 
     public function index(){
-        $data['title'] = "Dashboard Fakultas";
+        $data['title'] = "Dashboard";
+
         return view('user.dashboard',[
             "data"=>$data
         ]);

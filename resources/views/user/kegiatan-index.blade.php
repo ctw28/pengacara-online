@@ -60,9 +60,9 @@
                                     <h6 class="fs-15 font-w500 mb-0"><a
                                             href="javascript:void(0)">{{$item->kegiatan_nama}}</a></h6>
                                 </div>
-                                <div style="margin-left:20px">
+                                <!-- <div style="margin-left:20px">
                                     <a class="btn btn-info btn-xs" href="#">Detail</a>
-                                </div>
+                                </div> -->
                             </div>
 
                             <span class="accordion-header-indicator"></span>
@@ -88,7 +88,7 @@
                                 </div>
                                 <div class="me-3 mb-3">
                                     <p class="fs-12 mb-2">No. Bukti</p>
-                                    <span class="font-w500">{{$item->kegiatan_no_bukti}}</span>
+                                    <span class="font-w500">{{$item->kegiatan_nomor_bukti}}</span>
                                 </div>
                                 <div class="mb-3">
                                     <a class="btn btn-primary btn-sm"
@@ -100,8 +100,10 @@
                                         <button type="button" class="btn btn-warning dropdown-toggle"
                                             data-bs-toggle="dropdown">Edit/Hapus</button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="javascript:void()">Edit</a>
-                                            <a class="dropdown-item" href="javascript:void()">Hapus</a>
+                                            <a class="dropdown-item"
+                                                href="{{route('user.kegiatan.edit',$item->id)}}">Edit</a>
+                                            <a onclick="return confirm('yakin hapus?')" class="dropdown-item"
+                                                href="{{route('user.kegiatan.delete',$item->id)}}">Hapus</a>
                                         </div>
                                     </div>
                                 </div>

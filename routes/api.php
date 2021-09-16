@@ -30,3 +30,5 @@ Route::get('/kegiatan/{id}/peserta/', [KegiatanController::class, 'getKegiatanPe
 Route::post('/peserta', [KegiatanController::class, 'getPeserta'])->name('peserta.get');
 Route::get('kegiatan/{kegiatanId}/penerima', [KegiatanController::class, 'getPenerima'])->name('penerima.get');
 Route::get('kegiatan/peserta-per-sesi-pembayaran/{pembayaranSesiId}', [KegiatanController::class, 'getPesertaPerSesiPembayaran'])->name('get.peserta.per-sesi-pembayaran');
+
+Route::post('/ampra/store', [KegiatanController::class, 'storeAmpra'])->name('kegiatan.ampra.store');

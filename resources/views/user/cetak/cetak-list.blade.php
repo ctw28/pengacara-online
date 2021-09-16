@@ -8,7 +8,7 @@
         <h4 class="">Sesi Pembayaran:</h4>
         <p>Tanggal Pembayaran :
             {{\Carbon\Carbon::parse($data['pembayaran']->kegiatan_pembayaran_tanggal)->format('d M Y')}}
-            <br>Penerima : {{$data['pembayaran']->kegiatan_peserta_id}}
+            <br>Penerima : {{$data['pembayaran']->kegiatanPeserta->nama}}
         </p>
     </div>
 </div>

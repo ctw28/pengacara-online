@@ -2261,7 +2261,8 @@
                         <td class="s19"></td>
                         <td class="s19"></td>
                         <td class="s19" colspan="20">Kendari,
-                            {{$data['kegiatan'][0]->kegiatanPembayaran[0]->kegiatan_pembayaran_tanggal}}</td>
+                            {{\Carbon\Carbon::parse($data['kegiatan'][0]->kegiatanPembayaran[0]->kegiatan_pembayaran_tanggal)->format('d M Y')}}
+                        </td>
                         <td class="s20"></td>
                     </tr>
                     <tr style="height: 20px">
@@ -2321,7 +2322,7 @@
                         <td class="s72"></td>
                         <td class="s73"></td>
                         <td class="s39">:</td>
-                        <td class="s74" colspan="16">Nisful Hijah, SE</td>
+                        <td class="s74" colspan="16">{{$data['bendaharaPengeluaran']->pengaturanJabatan->idpeg}}</td>
                         <td class="s20"></td>
                     </tr>
                     <tr style="height: 20px">

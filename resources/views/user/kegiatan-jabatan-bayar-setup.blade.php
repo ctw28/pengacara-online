@@ -7,6 +7,8 @@
             <h4 class="">Info Kegiatan:</h4>
             <p>{{$data['kegiatan']->kegiatan_nama}}</p>
 
+            <a href="{{route('user.kegiatan.setup',$data['kegiatan']->id)}}" class="btn btn-warning btn-xs"><i
+                    class="fa fa-arrow-left"></i> Kembali</a>
         </div>
     </div>
     <div class="card">
@@ -33,8 +35,8 @@
                                         <div class="mb-3 col-md-3">
                                             <label class="form-label">Jenis Pembayaran</label>
                                             <select id="inputState" name="m_bayar_kategori_id"
-                                                class="default-select form-control wide">
-                                                <option selected>Pilih Jenis</option>
+                                                class="default-select form-control wide" required>
+                                                <option value="" selected>Pilih Jenis</option>
                                                 @foreach ($data['bayarKategori'] as $row)
                                                 <option value="{{$row->id}}">{{$row->bayar_nama}}</option>
                                                 @endforeach
@@ -43,17 +45,18 @@
                                         <div class="mb-3 col-md-3">
                                             <label class="form-label">Honor</label>
                                             <input type="text" id="honor" name="honor" class="form-control"
-                                                placeholder="Rp......">
+                                                placeholder="Rp......" required>
                                         </div>
                                         <div class="mb-3 col-md-3">
                                             <label class="form-label">Jumlah Satuan</label>
-                                            <input type="number" class="form-control" placeholder="" name="jumlah">
+                                            <input type="number" class="form-control" placeholder="" name="jumlah"
+                                                required>
                                         </div>
                                         <div class="mb-3 col-md-3">
                                             <label>Satuan</label>
                                             <select id="inputState" class="default-select form-control wide"
-                                                name="master_satuan_id">
-                                                <option selected>Pilih Satuan</option>
+                                                name="master_satuan_id" required>
+                                                <option value="" selected>Pilih Satuan</option>
                                                 <@foreach ($data['satuan'] as $row) <option value="{{$row->id}}">
                                                     {{$row->master_satuan_singkatan}} - {{$row->master_satuan_nama}}
                                                     </option>
@@ -114,7 +117,7 @@
                                     <div class="dropdown-menu" style="margin: 0px;">
                                         <a class="dropdown-item"
                                             href="{{route('user.kegiatan.jabatan.bayar.setup.destroy',$row->id)}}"
-                                            onclick="return confirm('Yakin?')"><i
+                                            onclick="return confirm('Yakin Hapus? ini akan menghapus semua data terkait data yang dihapus')"><i
                                                 class="las la-times-circle text-danger scale5 me-3"></i>Delete</a>
                                     </div>
                                 </div>

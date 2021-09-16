@@ -22,8 +22,8 @@ class CreateKegiatanPembayaransTable extends Migration
             $table->enum('status',[0,1])->default(0);
             $table->timestamps();
 
-            $table->foreign('kegiatan_id')->references('id')->on('kegiatans');
-            $table->foreign('kegiatan_peserta_id')->references('id')->on('kegiatan_pesertas');
+            $table->foreign('kegiatan_id')->references('id')->on('kegiatans')->onDelete('cascade');
+            $table->foreign('kegiatan_peserta_id')->references('id')->on('kegiatan_pesertas')->onDelete('cascade');
         });
     }
 

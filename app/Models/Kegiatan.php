@@ -17,6 +17,7 @@ class Kegiatan extends Model
         'kegiatan_akun',
         'kegiatan_sk',
         'kegiatan_sk_tanggal',
+        'kegiatan_nomor_bukti',
     ];
 
     public function pengaturanFakultasId()

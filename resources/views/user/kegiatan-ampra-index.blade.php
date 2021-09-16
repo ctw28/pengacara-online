@@ -8,7 +8,10 @@
         <h3 class="text-yellow card-balance">{{$data['kegiatan']->kegiatan_nama}}</h3>
         <span class="fs-18">Sesi Pembayaran :
             {{\Carbon\Carbon::parse($data['pembayaran']->kegiatan_pembayaran_tanggal)->format('d M Y')}}</span>
-
+        <br>
+        <br>
+        <a href="{{route('user.kegiatan.bayar',$data['kegiatan']->id)}}" class="btn btn-warning btn-xs"><i
+                class="fa fa-arrow-left"></i> Kembali</a>
     </div>
 </div>
 
@@ -92,6 +95,7 @@
                         <th>Honor</th>
                         <th>Jumlah</th>
                         <th>Satuan</th>
+                        <th>Bayar</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -104,13 +108,33 @@
                         <td>{{$row->kegiatanBayarJabatan->mBayarKategori->bayar_nama}}</td>
                         <td>{{$row->kegiatanBayarJabatan->kegiatanBayarJabatanAtur->honor}}</td>
                         <td>{{$row->kegiatanBayarJabatan->kegiatanBayarJabatanAtur->jumlah}}</td>
-                        <td>{{$row->kegiatanBayarJabatan->kegiatanBayarJabatanAtur->masterSatuan->master_satuan_nama}}
+                        <td>{{$row->kegiatanBayarJabatan->kegiatanBayarJabatanAtur->masterSatuan->master_satuan_singkatan}}
                         </td>
                         <td><a class="btn btn-info btn-xs" href="{{route('kegiatan.ampra.set',[
                             $data['kegiatan']->id,
                             $data['pembayaran']->id,
                             $row->id
                             ])}}">Bayar Ampra</a></td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn btn-danger light sharp" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <svg width="20px" height="20px" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect x="0" y="0" width="24" height="24"></rect>
+                                            <circle fill="#000000" cx="5" cy="12" r="2"></circle>
+                                            <circle fill="#000000" cx="12" cy="12" r="2"></circle>
+                                            <circle fill="#000000" cx="19" cy="12" r="2"></circle>
+                                        </g>
+                                    </svg>
+                                </button>
+                                <div class="dropdown-menu" style="margin: 0px;">
+                                    <a class="dropdown-item" href="{{route('kegiatan.ampra.destroy',$row->id)}}"
+                                        onclick="return confirm('Yakin Hapus? ini akan menghapus semua data terkait data yang dihapus')"><i
+                                            class="las la-times-circle text-danger scale5 me-3"></i>Delete</a>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>

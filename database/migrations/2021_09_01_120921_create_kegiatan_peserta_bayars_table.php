@@ -24,8 +24,8 @@ class CreateKegiatanPesertaBayarsTable extends Migration
             
             $table->timestamps();
             $table->foreign('kegiatan_pembayaran_sesi_id')->references('id')->on('kegiatan_pembayaran_sesis')->onDelete('cascade');
-            $table->foreign('kegiatan_peserta_id')->references('id')->on('kegiatan_pesertas');        
-            $table->foreign('master_satuan_id')->references('id')->on('master_satuans');        
+            $table->foreign('kegiatan_peserta_id')->references('id')->on('kegiatan_pesertas')->onDelete('cascade');
+            $table->foreign('master_satuan_id')->references('id')->on('master_satuans');
         });
     }
 

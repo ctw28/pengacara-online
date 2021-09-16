@@ -12,7 +12,8 @@
     <div class="card-body">
         <h4 class="">Info Kegiatan:</h4>
         <p>{{$data['kegiatan']->kegiatan_nama}}</p>
-
+        <a href="{{route('user.kegiatan.setup',$data['kegiatan']->id)}}" class="btn btn-warning btn-xs"><i
+                class="fa fa-arrow-left"></i> Kembali</a>
     </div>
 </div>
 

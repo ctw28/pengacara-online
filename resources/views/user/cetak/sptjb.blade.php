@@ -170,7 +170,8 @@
                     <td style="width:9.5cm">
                     </td>
                     <td style="width:10.7cm">
-                        Kendari, {{$data['kegiatan'][0]->kegiatanPembayaran[0]->kegiatan_pembayaran_tanggal}},<br />
+                        Kendari,
+                        {{\Carbon\Carbon::parse($data['kegiatan'][0]->kegiatanPembayaran[0]->kegiatan_pembayaran_tanggal)->format('d M Y')}},<br />
                         Pejabat Pembuat Komitmen
                     </td>
                 </tr>

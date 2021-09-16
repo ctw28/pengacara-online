@@ -5,5 +5,5 @@
 @endsection
 
 @section('content')
-<h1>ini dashboard Fakultas</h1>
+<h1>Selamat Datang Admin Febi</h1>
 @endsection

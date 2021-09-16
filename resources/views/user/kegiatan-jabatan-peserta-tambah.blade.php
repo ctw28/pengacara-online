@@ -12,7 +12,8 @@
     <div class="card-body">
         <h4 class="">Info Kegiatan:</h4>
         <p>{{$data['kegiatan']->kegiatan_nama}}</p>
-
+        <a href="{{route('user.kegiatan.jabatan.peserta',[$data['kegiatan']->id,$data['kegiatanJabatan']->id])}}"
+            class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i> Kembali</a>
     </div>
 </div>
 
@@ -33,16 +34,18 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="mb-3 col-md-6">
+                            <div class="mb-3 col-md-12">
                                 <label class="form-label">NIP <span class="required">*</span></label>
-                                <input type="text" class="form-control" name="nip" id="nip" placeholder="">
+                                <input type="text" class="form-control" name="nip" id="nip" placeholder="Isikan NIP"
+                                    required>
                             </div>
-                            <div class="mb-3 col-md-3">
+                            <div class="mb-3 col-md-12">
                                 <label class="form-label">NAMA LENGKAP <span class="required">*</span></label>
-                                <input type="text" class="form-control" name="nama" id="nama" placeholder="">
+                                <input type="text" class="form-control" name="nama" id="nama" placeholder="isikan Nama"
+                                    required>
                             </div>
-                            <div class="mb-3 col-md-3">
-                                <label class="form-label">GOLONGAN</label>
+                            <div class="mb-3 col-md-12">
+                                <label class="form-label">GOLONGAN <span class="required">*</span></label>
                                 <select name="golongan" id="golongan-list" class="form-control wide mb-4" required>
                                     <option>Pilih Golongan</option>
                                 </select>
@@ -267,23 +270,27 @@ async function setAnggota() {
 
 listAnggotaContainer.addEventListener('click', async function(e) {
     console.log(e.target.closest('tr'))
-    const url = "{{route('user.kegiatan.jabatan.peserta.destroy')}}";
-    let dataSend = new FormData()
-    dataSend.append('idpeg', e.target.closest('tr').dataset.id)
-    dataSend.append('kegiatan_jabatan_id', "{{$data['kegiatanJabatan']->id}}")
-    response = await fetch(url, {
-        method: "POST",
-        body: dataSend
-    })
-    responseMessage = await response.json()
-    console.log(responseMessage);
-    if (responseMessage.status) {
-        listAnggotaContainer.removeChild(e.target.closest('tr'));
-        setPegawai();
-        setAnggota()
+    let confirm = false
+    confirm = window.confirm("Yakin Keluarkan? ini akan menghapus semua data terkait data yang dihapus");
+    if (confirm == true) {
+        const url = "{{route('user.kegiatan.jabatan.peserta.destroy')}}";
+        let dataSend = new FormData()
+        dataSend.append('idpeg', e.target.closest('tr').dataset.id)
+        dataSend.append('kegiatan_jabatan_id', "{{$data['kegiatanJabatan']->id}}")
+        response = await fetch(url, {
+            method: "POST",
+            body: dataSend
+        })
+        responseMessage = await response.json()
+        console.log(responseMessage);
+        if (responseMessage.status) {
+            listAnggotaContainer.removeChild(e.target.closest('tr'));
+            setPegawai();
+            setAnggota()
 
-    } else {
-        alert('gagal, coba lagi');
+        } else {
+            alert('gagal, coba lagi');
+        }
     }
 });
 
@@ -441,6 +448,8 @@ manage.addEventListener('click', async function(e) {
         let nama = document.querySelector("#nama")
         let golongan = document.querySelector("#golongan-list")
         let dataSend = new FormData()
+        if (nip.value == '' || nama.value == '' || golongan.value == '')
+            return alert("tidak boleh kosong")
         // return console.log(golongan.options[golongan.selectedIndex].dataset.pajak);
         dataSend.append('idpeg', nip.value)
         dataSend.append('nip', nip.value)
@@ -455,9 +464,12 @@ manage.addEventListener('click', async function(e) {
         })
         responseMessage = await response.json()
         if (responseMessage.status) {
+            alert('Berhasil Tambah Data');
+            $('#basicModal').modal('hide');
+
             setAnggota();
         } else {
-            alert('ada kesalahan, coba lagiaaaaa');
+            alert('ada kesalahan, coba lagi');
         }
     });
 

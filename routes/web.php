@@ -39,9 +39,13 @@ Route::group(['middleware' => 'auth'], function(){
             Route::get('/kwitansi', [CetakController::class, 'index'])->name('kwitansi');
             Route::get('/kegiatan', [KegiatanController::class, 'index'])->name('user.kegiatan.index');
             Route::get('/kegiatan/tambah', [KegiatanController::class, 'create'])->name('user.kegiatan.create');
+            Route::get('/kegiatan/{kegiatanId}/edit', [KegiatanController::class, 'edit'])->name('user.kegiatan.edit');
+            Route::post('/kegiatan/{kegiatanId}/update', [KegiatanController::class, 'update'])->name('user.kegiatan.update');
             Route::post('/kegiatan/simpan', [KegiatanController::class, 'store'])->name('user.kegiatan.store');
+            Route::get('/kegiatan/{kegiatanId}/hapus', [KegiatanController::class, 'delete'])->name('user.kegiatan.delete');
             Route::get('/kegiatan/{id}/atur', [KegiatanController::class, 'setup'])->name('user.kegiatan.setup');
             Route::post('/kegiatan/atur/simpan-jabatan', [KegiatanController::class, 'storeJabatan'])->name('user.kegiatan.jabatan.store');
+            Route::get('/kegiatan/atur/jabatan/{id}', [KegiatanController::class, 'destroyJabatan'])->name('user.kegiatan.jabatan.destroy');
             Route::get('/kegiatan/{id}/atur/jabatan/{kegiatanJabatanId}/setup', [KegiatanController::class, 'setupJabatanBayar'])->name('user.kegiatan.jabatan.bayar.setup');
             Route::post('/kegiatan/atur/jabatan/setup/simpan', [KegiatanController::class, 'storeSetupJabatanBayar'])->name('user.kegiatan.jabatan.bayar.setup.store');
             Route::get('/kegiatan/atur/jabatan/setup/{id}/hapus', [KegiatanController::class, 'destroySetupJabatanBayar'])->name('user.kegiatan.jabatan.bayar.setup.destroy');
@@ -52,10 +56,12 @@ Route::group(['middleware' => 'auth'], function(){
             
             Route::get('/kegiatan/{kegiatanId}/pembayaran/{idPembayaran}', [KegiatanController::class, 'indexAmpra'])->name('kegiatan.ampra.index');
             Route::get('/kegiatan/{kegiatanId}/pembayaran/{pembayaranId}/sesi-pembayaran/{pembayaranSesiId}', [KegiatanController::class, 'setAmpra'])->name('kegiatan.ampra.set');
-            Route::post('/ampra/store', [KegiatanController::class, 'storeAmpra'])->name('kegiatan.ampra.store');
+            
             Route::post('/kegiatan/{kegiatanId}/pembayaran/{pembayaranId}/ampra/tambah', [KegiatanController::class, 'addAmpra'])->name('kegiatan.ampra.add');
+            Route::get('/kegiatan//pembayaran//pembayaran-sesi/{id}', [KegiatanController::class, 'destroyAmpra'])->name('kegiatan.ampra.destroy');
             Route::get('/kegiatan/{id}/pembayaran', [KegiatanController::class, 'bayarKegiatan'])->name('user.kegiatan.bayar');
             Route::post('/kegiatan/{id}/pembayaran/simpan', [KegiatanController::class, 'storebayarKegiatan'])->name('user.kegiatan.bayar.store');
+            Route::get('/kegiatan/pembayaran/{id}/hapus', [KegiatanController::class, 'destroyBayarKegiatan'])->name('user.kegiatan.bayar.destroy');
             
             Route::get('/kegiatan/{kegiatanId}/pembayaran/{pembayaranId}/cetak', [KegiatanController::class, 'cetak'])->name('kegiatan.print');
             Route::get('/kegiatan/{kegiatanId}/pembayaran/{pembayaranId}/cetak/{pembayaranSesiId}/ampra', [KegiatanController::class, 'printAmpra'])->name('kegiatan.ampra.print');

@@ -12,6 +12,11 @@
             {{$data['pembayaranJenis']->kegiatanBayarJabatan->mBayarKategori->bayar_nama}}
             ({{$data['pembayaranJenis']->kegiatanBayarJabatan->kegiatanJabatan->mKegiatanJabatan->kegiatan_jabatan_nama}})
         </span>
+        <br>
+        <br>
+        <a class="btn btn-warning btn-xs"
+            href="{{route('kegiatan.ampra.index',[$data['kegiatan']->id,$data['pembayaran']->id])}}"><i
+                class="fa fa-arrow-left"></i> Kembali</a>
     </div>
 </div>
 
@@ -54,16 +59,16 @@
                                 <input type="hidden" name="data[{{$index}}][kegiatan_peserta_id]" value="{{$row->id}}">
                             </td>
                             <td>{{$row->golongan}}</td>
-                            <td>{{$row->kegiatanJabatan->mKegiatanJabatan->kegiatan_jabatan_nama}}</td>
+                            <td>{{$row->jabatan}}</td>
                             <td>
                                 <span>
                                     Rp.
                                     <input style="width:90px" class="text-center honor" type="text" data-jenis="honor"
-                                        name="data[{{$index}}][honor]"
-                                        value="{{number_format($data['pembayaranJenis']->honor, 0, ',','.')}}">
+                                        value="{{number_format($row->honor, 0, ',','.')}}"
+                                        name="data[{{$index}}][honor]">
                                     x
                                     <input style="width:35px" class="text-center jumlah" type="text" data-jenis="jumlah"
-                                        name="data[{{$index}}][jumlah]" value="{{$data['pembayaranJenis']->jumlah}}">
+                                        name="data[{{$index}}][jumlah]" value="{{$row->jumlah}}">
                                     <input type="hidden" value="{{$data['pembayaranJenis']->masterSatuan->id}}"
                                         name="data[{{$index}}][master_satuan_id]">
                                     {{$row->satuan}} = Rp.
@@ -78,7 +83,8 @@
                             @endif
 
 
-                            <td class="terima">Rp. <span>{{number_format($row->terima, 0, ',','.')}}</span>
+                            <td class="terima">Rp. <span
+                                    class="total-honor-pajak">{{number_format($row->terima, 0, ',','.')}}</span>
                             </td>
                             <td>Terlampir</td>
                             <!-- <td><a href="#" onclick="return confirm('Yakin Keluarkan dari pembayaran?')"><i
@@ -87,7 +93,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                <button type="submit" class="btn btn-warning">Submit</button>
+                <button type="button" class="btn btn-warning" onclick="insert()">Submit</button>
             </form>
         </div>
     </div>
@@ -96,6 +102,50 @@
 
 @section('js')
 <script>
+// test()
+let isPajak = "{{$data['pajak']}}"
+async function insert() {
+    let inputsLenght = @json($data['peserta']);
+    let datanya = [];
+    for (var i = 0; i < inputsLenght.length; i++) {
+        let kegiatan_pembayaran_sesi_id = document.getElementsByName(`data[${i}][kegiatan_pembayaran_sesi_id]`)[0]
+            .attributes.value.value;
+        let kegiatan_peserta_id = document.getElementsByName(`data[${i}][kegiatan_peserta_id]`)[0].attributes.value
+            .value;
+        let honor = document.getElementsByName(`data[${i}][honor]`)[0].attributes.value.value;
+        let master_satuan_id = document.getElementsByName(`data[${i}][master_satuan_id]`)[0].attributes.value.value;
+        let jumlah = document.getElementsByName(`data[${i}][jumlah]`)[0].attributes.value.value;
+        let pajak = 0;
+        let obj = {};
+        if (isPajak == "1") {
+            pajak = document.getElementsByName(`data[${i}][pajak]`)[0].attributes.value.value;
+        }
+        obj.pajak = pajak
+        obj.kegiatan_pembayaran_sesi_id = kegiatan_pembayaran_sesi_id
+        obj.kegiatan_peserta_id = kegiatan_peserta_id
+        obj.honor = honor.replace(/\D/g, '')
+        obj.master_satuan_id = master_satuan_id
+        obj.jumlah = jumlah
+        datanya.push(obj);
+    }
+    console.log(datanya);
+
+    const url = "{{route('kegiatan.ampra.store')}}";
+    let dataSend = new FormData()
+    dataSend.append('kegiatan_pembayaran_sesi_id', "{{$data['sesiId']}}")
+    dataSend.append('data', JSON.stringify(datanya))
+    let response = await fetch(url, {
+        method: "POST",
+        body: dataSend
+    });
+    let responseMessage = await response.json()
+    console.log(responseMessage);
+    if (responseMessage)
+        return alert('Sukses')
+    return alert('ada kesalahan')
+}
+
+
 const locale = "de-DE";
 const numberFormat = new Intl.NumberFormat(locale, {
     style: "decimal",
@@ -106,6 +156,8 @@ const onlyChars = new RegExp(/^.$/)
 const onlyNumbers = new RegExp(/\d/);
 let input = document.querySelectorAll("input[type='text']")
 let totalHonor = document.querySelectorAll(".total-honor")
+if (isPajak == "1")
+    totalHonor = document.querySelectorAll(".total-honor-pajak")
 
 for (let i = 0; i < input.length; i++) {
     input[i].addEventListener("input", function(e) {
@@ -129,6 +181,7 @@ for (let i = 0; i < input.length; i++) {
         let grandTotal = 0;
         for (var i = 0; i < totalHonor.length; i++) {
             grandTotal = grandTotal + parseFloat(totalHonor[i].innerText.replace(/\./g, ''));
+            console.log(`garnd = ${grandTotal}, total honor = ${totalHonor[i].innerText}`);
         }
         var getNextSibling = function(elem, selector) {
 
@@ -148,7 +201,6 @@ for (let i = 0; i < input.length; i++) {
         };
         document.querySelector("#total").innerText = numberFormat.format(String(grandTotal).replace(/\./g,
             ''))
-        let isPajak = "{{$data['pajak']}}"
         if (isPajak == "1") {
             let pajak = getNextSibling(e.target.closest('td'))
             console.log(pajak);
@@ -172,6 +224,7 @@ for (let i = 0; i < input.length; i++) {
             e.target.closest('td').nextElementSibling.firstElementChild.innerText = totalKali
         }
         e.target.value = numberFormat.format(e.target.value.replace(/\D/g, ''))
+        this.setAttribute("value", numberFormat.format(e.target.value.replace(/\D/g, '')));
         if (onlyChars.test(e.key) &&
             !e.getModifierState('Meta') &&
             !e.getModifierState('Ctrl')) {

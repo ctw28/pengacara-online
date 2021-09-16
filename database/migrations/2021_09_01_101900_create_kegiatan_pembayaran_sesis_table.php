@@ -19,8 +19,8 @@ class CreateKegiatanPembayaranSesisTable extends Migration
             $table->unsignedBigInteger('kegiatan_bayar_jabatan_id');
             $table->timestamps();
 
-            $table->foreign('pembayaran_id')->references('id')->on('kegiatan_pembayarans');        
-            $table->foreign('kegiatan_bayar_jabatan_id')->references('id')->on('kegiatan_bayar_jabatans');        
+            $table->foreign('pembayaran_id')->references('id')->on('kegiatan_pembayarans')->onDelete('cascade');
+            $table->foreign('kegiatan_bayar_jabatan_id')->references('id')->on('kegiatan_bayar_jabatans')->onDelete('cascade');
         });
     }
 

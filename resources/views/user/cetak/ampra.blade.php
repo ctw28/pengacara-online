@@ -73,15 +73,15 @@
             <thead>
                 <tr style="font-size:12px;">
                     <th style="width:0.5cm">NO.</th>
-                    <th style="width:4cm">NAMA</th>
+                    <th style="width:5.5cm">NAMA</th>
                     <th style="width:1cm">GOL.</th>
                     <th style="width:1.5cm">JABATAN</th>
-                    <th style="width:6.5cm">JUMLAH HONOR (Rp)</th>
+                    <th style="width:6cm">JUMLAH HONOR (Rp)</th>
                     @if($data['pajak']==true)
-                    <th style="width:2.5cm">PAJAK (Rp)</th>
+                    <th style="width:1.7cm">PAJAK (Rp)</th>
                     @endif
-                    <th style="width:2.5cm">JUMLAH YANG <br>DITERIMA(Rp)</th>
-                    <th style="width:2.5cm">NOMOR <br> REKENING</th>
+                    <th style="width:2cm">JUMLAH YANG <br>DITERIMA(Rp)</th>
+                    <th style="width:2cm">NOMOR <br> REKENING</th>
                 </tr>
                 <tr style="font-size:10px;" class="text-center">
                     <td>1</td>
@@ -108,7 +108,7 @@
                         {{$data['dataPembayaran'][0]->kegiatanJabatan->mKegiatanJabatan->kegiatan_jabatan_nama}}
                     </td>
                     <td class="border text-center">{{number_format($row->honor, 0, ',','.')}} x {{$row->jumlah}}
-                        {{$row->masterSatuan->master_satuan_nama}} = {{number_format($row->total, 0, ',','.')}}</td>
+                        {{$row->masterSatuan->master_satuan_singkatan}} = {{number_format($row->total, 0, ',','.')}}</td>
                     @if($data['pajak']==true)
                     <td class="border text-center">{{number_format($row->pajak,0, ',','.')}}</td>
                     <input type="hidden" value="{{$row->pajak}}" name="data[{{$index}}][pajak]">

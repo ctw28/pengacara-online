@@ -89,7 +89,7 @@
                 <tr>
                     <td>No. Bukti</td>
                     <td>:</td>
-                    <td>{{$data['kegiatan'][0]->kegiatan_no_bukti}}</td>
+                    <td>{{$data['kegiatan'][0]->kegiatan_nomor_bukti}}</td>
                 </tr>
                 <tr>
                     <td>Telah Terima Dari</td>
@@ -143,7 +143,8 @@
                         Bendahara Pengeluaran
                     </td>
                     <td style="width:7cm">
-                        Kendari, {{$data['kegiatan'][0]->kegiatanPembayaran[0]->kegiatan_pembayaran_tanggal}},<br />
+                        Kendari,
+                        {{\Carbon\Carbon::parse($data['kegiatan'][0]->kegiatanPembayaran[0]->kegiatan_pembayaran_tanggal)->format('d M Y')}},<br />
                         Yang Menerima
                     </td>
                 </tr>
