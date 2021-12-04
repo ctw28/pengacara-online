@@ -16,7 +16,7 @@
 
 <div class="card">
     <div class="card-body">
-        <h4 class="card-title">Ampra</h4>
+        <h4 class="card-title">Pembayaran Nominal</h4>
         <div class="table-responsive">
             <table class="table table-responsive-sm">
                 <thead>
@@ -36,10 +36,8 @@
                         </td>
                         <td>{{$row->kegiatanBayarJabatan->mBayarKategori->bayar_nama}}</td>
                         <!-- <td>Rp. xxxxxxxxxx </td> -->
-                        <td><a class="btn btn-warning btn-xs"
-                                href="{{route('kegiatan.ampra.print',[$data['kegiatan']->id,$data['pembayaran']->id, $row->id])}}"><i
-                                    class="fa fa-print"></i>
-                                Cetak Ampra</a></td>
+                        <td><a class="btn btn-warning btn-xs" href="{{route('kegiatan.ampra.print',[$data['kegiatan']->id,$data['pembayaran']->id, $row->id])}}"><i class="fa fa-print"></i>
+                                Cetak Pembayan Nominal</a></td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -60,9 +58,7 @@
                     <tr>
                         <td>{{$index+1}}</td>
                         <td>{{$row['nama']}}</td>
-                        <td><a class="btn btn-warning btn-xs"
-                                href="{{route('kegiatan.print.dokumen',[$data['kegiatan']->id,$data['pembayaran']->id,$row['alias']])}}"><i
-                                    class="fa fa-print"></i>
+                        <td><a class="btn btn-warning btn-xs" href="{{route('kegiatan.print.dokumen',[$data['kegiatan']->id,$data['pembayaran']->id,$row['alias']])}}"><i class="fa fa-print"></i>
                                 Cetak</a></td>
                     </tr>
                     @endforeach

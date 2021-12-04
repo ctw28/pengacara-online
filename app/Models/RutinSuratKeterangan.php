@@ -5,27 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Kegiatan extends Model
+class RutinSuratKeterangan extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'pengaturan_fakultas_id',
-        'kegiatan_nama',
-        'kegiatan_tanggal',
-        'kegiatan_sub_kegiatan',
-        'kegiatan_akun',
-        'kegiatan_sk',
-        'kegiatan_sk_tanggal',
-        'kegiatan_no_bukti',
+        'sk',
+        'sk_tanggal',
+        'sub_kegiatan',
+        'no_bukti',
+        'akun',
+        'is_aktif'
     ];
 
     public function pengaturanFakultasId()
     {
         return $this->belongsTo('App\Models\PengaturanFakultas');
     }
-    public function kegiatanPembayaran()
+
+    public function rutinPejabat()
     {
-        return $this->hasMany('App\Models\KegiatanPembayaran');
+        return $this->hasMany('App\Models\RutinPejabat');
     }
 }

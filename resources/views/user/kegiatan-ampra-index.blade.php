@@ -10,17 +10,15 @@
             {{\Carbon\Carbon::parse($data['pembayaran']->kegiatan_pembayaran_tanggal)->format('d M Y')}}</span>
         <br>
         <br>
-        <a href="{{route('user.kegiatan.bayar',$data['kegiatan']->id)}}" class="btn btn-warning btn-xs"><i
-                class="fa fa-arrow-left"></i> Kembali</a>
+        <a href="{{route('user.kegiatan.bayar',$data['kegiatan']->id)}}" class="btn btn-warning btn-xs"><i class="fa fa-arrow-left"></i> Kembali</a>
     </div>
 </div>
 
 <div class="card mt-4">
     <div class="card-header">
-        <h4 class="card-title">Pembayaran Ampra</h4>
-        <button id="manage" type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-            data-bs-target="#basicModal">
-            Tambah Pembayaran Ampra</button>
+        <h4 class="card-title">Pembayaran Nominal</h4>
+        <button id="manage" type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#basicModal">
+            Tambah Pembayaran Nominal</button>
         <!-- Modal -->
         <div class="modal fade" id="basicModal">
             <div class="modal-dialog  modal-lg" role="document">
@@ -32,9 +30,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="table-responsive">
-                            <form
-                                action="{{route('kegiatan.ampra.add',[$data['kegiatan']->id,$data['pembayaran']->id])}}"
-                                method="post">
+                            <form action="{{route('kegiatan.ampra.add',[$data['kegiatan']->id,$data['pembayaran']->id])}}" method="post">
                                 <table class="table table-hover table-striped table-responsive-md">
                                     <thead>
                                         <tr>
@@ -58,8 +54,7 @@
                                         <tr>
                                             <td>
                                                 <div class="form-check custom-checkbox checkbox-success check-lg me-3">
-                                                    <input type="checkbox" class="form-check-input" id="customCheckBox2"
-                                                        name="kegiatan_bayar_jabatan_id[]" value="{{$row2->id}}">
+                                                    <input type="checkbox" class="form-check-input" id="customCheckBox2" name="kegiatan_bayar_jabatan_id[]" value="{{$row2->id}}">
                                                     <label class="form-check-label" for="customCheckBox2"></label>
                                                 </div>
                                             </td>
@@ -114,11 +109,10 @@
                             $data['kegiatan']->id,
                             $data['pembayaran']->id,
                             $row->id
-                            ])}}">Bayar Ampra</a></td>
+                            ])}}">Bayar Nominal</a></td>
                         <td>
                             <div class="dropdown">
-                                <button type="button" class="btn btn-danger light sharp" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
+                                <button type="button" class="btn btn-danger light sharp" data-bs-toggle="dropdown" aria-expanded="false">
                                     <svg width="20px" height="20px" viewBox="0 0 24 24" version="1.1">
                                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                             <rect x="0" y="0" width="24" height="24"></rect>
@@ -129,9 +123,7 @@
                                     </svg>
                                 </button>
                                 <div class="dropdown-menu" style="margin: 0px;">
-                                    <a class="dropdown-item" href="{{route('kegiatan.ampra.destroy',$row->id)}}"
-                                        onclick="return confirm('Yakin Hapus? ini akan menghapus semua data terkait data yang dihapus')"><i
-                                            class="las la-times-circle text-danger scale5 me-3"></i>Delete</a>
+                                    <a class="dropdown-item" href="{{route('kegiatan.ampra.destroy',$row->id)}}" onclick="return confirm('Yakin Hapus? ini akan menghapus semua data terkait data yang dihapus')"><i class="las la-times-circle text-danger scale5 me-3"></i>Delete</a>
                                 </div>
                             </div>
                         </td>

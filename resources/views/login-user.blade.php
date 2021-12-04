@@ -34,16 +34,14 @@
                                 <div class="auth-form">
                                     <div class="text-center mb-3">
                                         <img src="{{asset('/logo-iain.png')}}">
-                                        <h1 class="mt-3 mb-3">Pengajuan Anggaran Online</h1>
+                                        <h2 class="mt-3 mb-3">Pengajuan Pencairan Anggaran Online</h2>
                                     </div>
                                     <h4 class="text-center">Login untuk masuk</h4>
                                     <form method="POST" action="{{ route('login') }}">
                                         @csrf
                                         <div class="mb-3">
                                             <label class="mb-1"><strong>Email</strong></label>
-                                            <input type="email" name="email"
-                                                class="form-control @error('email') is-invalid @enderror"
-                                                value="{{ old('email') }}">
+                                            <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}">
                                             @error('email')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -52,8 +50,7 @@
                                         </div>
                                         <div class="mb-3">
                                             <label class="mb-1"><strong>Password</strong></label>
-                                            <input type="password" name="password"
-                                                class="form-control @error('password') is-invalid @enderror" value="">
+                                            <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" value="">
                                             @error('password')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>

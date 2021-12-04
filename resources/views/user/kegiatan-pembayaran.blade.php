@@ -37,13 +37,11 @@
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label class="form-label">Tanggal Lunas</label>
-                                    <input type="date" class="form-control" name="kegiatan_pembayaran_tanggal_lunas"
-                                        required>
+                                    <input type="date" class="form-control" name="kegiatan_pembayaran_tanggal_lunas" required>
                                 </div>
                                 <div class="mb-3 col-md-12">
                                     <label class="form-label">Penerima <span class="required">*</span></label>
-                                    <select name="kegiatan_peserta_id" id="peserta-list" class="form-control wide mb-4"
-                                        required>
+                                    <select name="kegiatan_peserta_id" id="peserta-list" class="form-control wide mb-4" required>
                                         <option value=''>Pilih Penerima</option>
                                         @forEach($data['peserta'] as $row)
                                         <option value='{{$row->idpeg}}'>{{$row->nip}} - {{$row->nama}}</option>
@@ -79,20 +77,15 @@
                         <td>{{$key+1}}</td>
                         <td>{{\Carbon\Carbon::parse($item->kegiatan_pembayaran_tanggal)->format('d M Y')}}</td>
                         <td>{{$item->kegiatanPeserta->nama}}</td>
-                        <td><a class="btn btn-info btn-xs"
-                                href="{{route('kegiatan.ampra.index',[$data['kegiatan']->id,$item->id])}}"><i
-                                    class="fa fa-gear"></i>
-                                Pembayaran Ampra</a></td>
+                        <td><a class="btn btn-info btn-xs" href="{{route('kegiatan.ampra.index',[$data['kegiatan']->id,$item->id])}}"><i class="fa fa-gear"></i>
+                                Pembayaran Nominal</a></td>
                         </td>
-                        <td><a class="btn btn-warning btn-xs"
-                                href="{{route('kegiatan.print',[$data['kegiatan']->id,$item->id])}}"><i
-                                    class="fa fa-print"></i>
+                        <td><a class="btn btn-warning btn-xs" href="{{route('kegiatan.print',[$data['kegiatan']->id,$item->id])}}"><i class="fa fa-print"></i>
                                 Cetak Dokumen Pembayaran</a></td>
                         </td>
                         <td>
                             <div class="dropdown">
-                                <button type="button" class="btn btn-danger light sharp" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
+                                <button type="button" class="btn btn-danger light sharp" data-bs-toggle="dropdown" aria-expanded="false">
                                     <svg width="20px" height="20px" viewBox="0 0 24 24" version="1.1">
                                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                             <rect x="0" y="0" width="24" height="24"></rect>
@@ -103,9 +96,7 @@
                                     </svg>
                                 </button>
                                 <div class="dropdown-menu" style="margin: 0px;">
-                                    <a class="dropdown-item" href="{{route('user.kegiatan.bayar.destroy',$item->id)}}"
-                                        onclick="return confirm('Yakin Hapus? ini akan menghapus semua data terkait data yang dihapus')"><i
-                                            class="las la-times-circle text-danger scale5 me-3"></i>Delete</a>
+                                    <a class="dropdown-item" href="{{route('user.kegiatan.bayar.destroy',$item->id)}}" onclick="return confirm('Yakin Hapus? ini akan menghapus semua data terkait data yang dihapus')"><i class="las la-times-circle text-danger scale5 me-3"></i>Delete</a>
                                 </div>
                             </div>
                         </td>
